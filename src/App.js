@@ -1,10 +1,15 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
+import React from 'react';
+import Navigation from './components/Navigation';
+import Home from './components/Home';
 import './App.css';
+
 
 function App() {
   return (
-  <div className=' bg-red-300'>
-    hello
+  <div>
+    <Navigation/>
+    <Home/>
   </div>
   );
 }

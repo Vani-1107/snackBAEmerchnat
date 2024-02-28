@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import bell from "./Notification.png";
-import logo from "./IMG-20231226-WA0003 3.png";
-import buttonlogo from "./Group 1000003960.png";
-import profile from "./Rectangle 5412.png";
+import bell from "../assets/Notification.png";
+import logo from "../assets/IMG-20231226-WA0003 3.png";
+import buttonlogo from "../assets/Group 1000003960.png";
+import profile from "../assets/Rectangle 5412.png";
 function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Initially logged out
 

@@ -10,13 +10,14 @@ import { MdArrowBackIos } from "react-icons/md";
 import slider from "../assets/sliderimg.png";
 import arrow1 from "../assets/Group 1000004020.png";
 import arrow2 from "../assets/v.png";
+import Modal from "react-modal";
 
 const images = [
   { url: slider, caption: "Image 1" },
   { url: slider, caption: "Image 2" },
   { url: slider, caption: "Image 3" },
 ];
-
+Modal.setAppElement("#root");
 function Home() {
   // const images = [
   //     'slider1.png',
@@ -24,7 +25,7 @@ function Home() {
   //     'More.jpg',
   //     // Add more image URLs as needed
   //   ];
-
+  // Slider
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleNext = () => {
@@ -36,7 +37,17 @@ function Home() {
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
   };
+  // Popup
+  const [isOpen, setIsOpen] = useState(false);
 
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const modalClasses = `fixed top-8 left-1/3  w-1/4 h-5/6 flex justify-centre bg-white  z-50`;
   return (
     <div className="home-page">
       {" "}
@@ -99,11 +110,28 @@ function Home() {
         <div className="flex flex-col py-2 px-20 my-24 ">
           <div className="button-div  bottom-2 h-fit w-[30vw] items-center ">
             <div className="button1">
-              <button className="h-16 text-md w-full border-2 rounded-lg mb-8 text-xl flex justify-between py-2 ">
+              <button
+                className="h-16 text-md w-full border-2 rounded-lg mb-8 text-xl flex justify-between py-2 "
+                onClick={openModal}
+              >
                 <span className="pl-8 py-2">Recommed This Place </span>
 
                 <img className=" px-6 py-2 h-10 " src={arrow1} alt="" />
               </button>
+              <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                contentLabel="Example Modal"
+                className={modalClasses}
+              >
+                <div className="pop-up w-[50vw] ">
+                  <div className="head-pop text-xl font-bold text-slate-600 py-2 flex align-middle items-center">
+                    Recommend this place to help other foodies
+                  </div>
+                </div>
+                <button onClick={closeModal}></button>
+              </Modal>
+              {/* </div> */}
             </div>
             <div className="button2  ">
               <button className="h-16 text-md w-full border-2 rounded-lg mb-8 text-xl flex justify-between ">

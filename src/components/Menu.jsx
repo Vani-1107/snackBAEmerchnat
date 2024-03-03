@@ -19,15 +19,15 @@ const data = [
 ];
 const price = ["₹240"];
 const recommend = [{ image: rec, text: "1000+" }];
-const rectext = ["Recommendations"];
+const rectext = ["Recommendations"]; 
 function Menu() {
   return (
-    <div className="menu-page h-[100vh]  w-[80%] mx-auto">
-      <div className="menu-head text-3xl text-slate-600 font-bold">
+    <div className="menu-page h-[fit]  w-[80%] mx-auto lg:px-4  pb-8">
+      <div className="menu-head  text-slate-600 font-bold sm:pt-4 sm:text-2xl relative sm:-ml-4 lg:text-3xl">
         Explore Menu
       </div>
       {/* types */}
-      <div className="menu-div flex flex-row py-8 ">
+      <div className="menu-div flex flex-row py-8 sm:-ml-7">
         {texts.map((text, index) => (
           <div
             key={index}
@@ -38,7 +38,7 @@ function Menu() {
         ))}
       </div>
       {/* menu ite */}
-      <div className="menu-img ">
+      <div className="menu-img  ">
         <div className="flex gap-6 flex-wrap">
           {data.map((item, index) => (
             <div key={index} className="relative mt-24">

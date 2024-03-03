@@ -15,7 +15,7 @@ function Navigation() {
   };
 
   return (
-    <div className="w-full navbar flex justify-between items-center px-10 py-[0.5]">
+    <div className="w-full navbar flex justify-between items-center px-10 py-[0.5] sm:hidden md:flex lg:flex">
       <div className="">
         <img className="w-32" src={logo} alt="" />
       </div>

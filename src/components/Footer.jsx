@@ -46,7 +46,7 @@ function Footer() {
                 />
                 <button
                   onClick={submitEmailHandler}
-                  className="bg-[#EAB308] h-[3rem] px-2 rounded-t-md text-black font-semibold"
+                  className="bg-[#EAB308] h-[3rem] px-2 rounded-t-md text-black font-semibold  lg:right-10 relative"
                 >
                   Send
                 </button>

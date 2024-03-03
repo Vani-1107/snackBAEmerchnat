@@ -6,16 +6,20 @@ import About from './components/About';
 import Menu from './components/Menu';
 import './App.css';
 import Footer from './components/Footer';
+import Footer1 from './components/Footer2';
+import Photos from './components/Photos';
 
 
 function App() {
   return (
-  <div>
+  <div className='overflow-hidden'>
     <Navigation/>
     <Home/>
     <About/>
+    <Photos/>
     <Menu/>
     <Footer/>
+    <Footer1/>
   </div>
   );
 }

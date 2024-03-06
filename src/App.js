@@ -15,11 +15,11 @@ function App() {
   <div className='overflow-hidden'>
     <Navigation/>
     <Home/>
-    <About/>
+    
     <Photos/>
     <Menu/>
     <Footer/>
-    <Footer1/>
+    
   </div>
   );
 }

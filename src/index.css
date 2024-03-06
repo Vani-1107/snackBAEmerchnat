@@ -13,3 +13,11 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+
+:host{
+    background: black;
+}
+
+*{
+    scroll-behavior: smooth;  
+}

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { GoDotFill } from "react-icons/go";
 import direction from "../assets/direction.png";
 import { FiPhone } from "react-icons/fi";
 import Modal from "react-modal";
 import chow from "../assets/chow.png";
+import { IoCloseSharp } from "react-icons/io5";
 Modal.setAppElement("#root");
 function About() {
   //popup4
@@ -12,16 +13,76 @@ function About() {
 
   const openModal3 = () => {
     setIsOpen3(true);
+    document.getElementById('background').style.filter = "blur(10px)";
+    document.documentElement.scrollTop = 0;
   };
 
   const closeModal3 = () => {
     setIsOpen3(false);
+    document.getElementById('background').style.filter = "blur(0px)";
+   
   };
-
+  useEffect(() => {}, [isOpen3]);
   //const modalClasses = `absolute top-8 left-1/3  w-1/4 h-fit flex justify-centre bg-white rounded-xl  z-50 md:w-[50vw]`;
-  const modalClasses = `absolute top-8 lg:left-1/3 lg:w-[25vw] lg:h-fit md:h-fit flex justify-centre bg-white z-50 rounded-lg  md:w-fit 
-   sm:h-[100%] sm:w-[100%] sm:left-0 md:h-fit md:left-1/4 `;
+  // const modalClasses = `absolute top-8 lg:left-1/3 lg:w-[25vw] lg:h-fit md:h-fit flex justify-centre bg-white z-50 rounded-lg  md:w-fit 
+  //  sm:h-[100%] sm:w-[100%] sm:left-0 md:h-fit md:left-1/4 `;
   return (
+    <div >
+   {/* contact popup */}
+    <div>
+      {isOpen3 &&(
+        <div>
+          <div className="absolute top-16 lg:left-[33%] md:left-[25%] sm:left-0 bg-white z-[100] ">
+            <div className="pop-up lg:h-fit lg:w-[25vw] md:h-fit md:w-[50vw] sm:h-full sm:w-[98%]">
+            <div className="text-lg font-bold text-slate-500 px-28 py-6">
+                  Call at Restaurant
+                </div>
+                <div className="chow-div flex flex-row px-8 w-[379px] border-y-2">
+                  <div className="chow">
+                    <img src={chow} className="h-16 w-16 pt-2" alt="" />
+                  </div>
+                  <div className="chow-text flex flex-col py-4">
+                    <div className="text1 px-4 text-lg font-bold">
+                      Chowman - Salt Lake
+                    </div>
+                    <div className="txt2 px-4 text-slate-600">
+                      Salt Lake ,Sector 2
+                    </div>
+                  </div>
+                </div>
+                <div className="contact py-6 px-24">
+                  <div className="flex flex-col ">
+                    <div className="text-sm pb-2 text-center">
+                      You can contact the restaurant
+                    </div>
+                    <div className="text-sm text-yellow-400 px-12 pb-4">
+                      +9123456789
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-sm ml-4 text-center">Alternate Contact number</div>
+                    <div className="text-sm text-yellow-400 px-12 py-2">
+                      +9123456789
+                    </div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  <div className="absolute top-4 right-1">
+                    <button
+                      className=""
+                      onClick={closeModal3}
+                    >
+                      <IoCloseSharp size={36} color="rgba(255, 214, 40, 1)" />
+                    </button>
+                  
+              </div>
+             </div>
+        
+      )}
+    </div>
+
+   <div id="about">
     <div className="about-page h-fit  py-4 ">
       <div className="heading text-slate-600 lg:text-3xl font-bold w-[90%] mx-auto  md:text-2xl  md:-py-12  pb-8 ">
         About The Place
@@ -60,7 +121,7 @@ function About() {
               <FiPhone size={24} color="yellow" />
             </div>
             <div className="text-div py-2">
-              <span onClick={openModal3} className="cursor-pointer">
+              <span onClick={openModal3}  className="cursor-pointer">
                 Call Restaurant
               </span>
             </div>
@@ -121,51 +182,23 @@ function About() {
               Call Restaurant
             </span>
 
-            <Modal
+            {/* <Modal
               isOpen={isOpen3}
               onRequestClose={closeModal3}
               contentLabel="Example Modal"
               className={modalClasses}
-            >
+            > */}
               <div className="call">
-                <div className="text-lg font-bold text-slate-500 px-28 py-6">
-                  Call at Restaurant
+             
                 </div>
-                <div className="chow-div flex flex-row px-8 w-[379px] border-y-2">
-                  <div className="chow">
-                    <img src={chow} className="h-16 w-16 pt-2" alt="" />
-                  </div>
-                  <div className="chow-text flex flex-col py-4">
-                    <div className="text1 px-4 text-lg font-bold">
-                      Chowman - Salt Lake
-                    </div>
-                    <div className="txt2 px-4 text-slate-600">
-                      Salt Lake ,Sector 2
-                    </div>
-                  </div>
-                </div>
-                <div className="contact py-6 px-24">
-                  <div className="flex flex-col ">
-                    <div className="text-sm pb-2">
-                      You can contact the restaurant
-                    </div>
-                    <div className="text-sm text-yellow-400 px-12 pb-4">
-                      +9123456789
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="text-sm ml-4">Alternate Contact number</div>
-                    <div className="text-sm text-yellow-400 px-12 py-2">
-                      +9123456789
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button className="rounded-3xl bg-yellow-500 h-fit w-fit -top-6 absolute left-1/2" onClick={closeModal3}>✖</button>
-            </Modal>
+
+             
+            {/* </Modal> */}
           </div>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }

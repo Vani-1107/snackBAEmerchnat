@@ -15,11 +15,7 @@ function App() {
   <div className='overflow-hidden'>
     <Navigation/>
     <Home/>
-    
-    <Photos/>
-    <Menu/>
-    <Footer/>
-    
+    {/* <Footer/>  */}
   </div>
   );
 }

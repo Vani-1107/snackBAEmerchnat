@@ -20,12 +20,18 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import restroname from "../assets/restroimg.png";
 import { IoCloseSharp } from "react-icons/io5";
 import About from "./About";
-import Footer1 from "./Footer2";
 import right from "../assets/right.png";
 import celeb from "../assets/celeb.png";
 import { FaCheck } from "react-icons/fa";
 import girl from "../assets/girl.png";
+import messeng from "../assets/messeng.png";
+import whatsapp from "../assets/whatsapp.png";
+import tele from "../assets/tele.png";
+import chat from "../assets/chat.png";
+import Menu from "./Menu";
+import Footer from "./Footer";
 
+import Photos from "./Photos";
 const datanew = [
   {
     id: 1,
@@ -207,7 +213,7 @@ function Home() {
   const getWeekDates = () => {
     const days = [];
     const currentDay = startDate.getDay();
-    for (let i = currentDay + 1; i >= 1; i--) {
+    for (let i = currentDay; i >= 0; i--) {
       const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
 
       const d = new Date(date);
@@ -337,8 +343,21 @@ function Home() {
     setIsOpen6(false);
     document.getElementById("background").style.filter = "blur(0px)";
   };
+  //share pop-up
+  const [isOpen7, setIsOpen7] = useState(false);
 
-  useEffect(() => {}, [isOpen, isOpen4, isOpen2, isOpen5, isOpen6]);
+  const openModal7 = () => {
+    setIsOpen7(true);
+    document.getElementById("background").style.filter = "blur(10px)";
+    document.documentElement.scrollTop = 0;
+  };
+
+  const closeModal7 = () => {
+    setIsOpen7(false);
+    document.getElementById("background").style.filter = "blur(0px)";
+  };
+
+  useEffect(() => {}, [isOpen, isOpen1, isOpen4, isOpen2, isOpen5, isOpen6, isOpen7]);
 
   //Search bar
   const [searchTerm, setSearchTerm] = useState("");
@@ -364,15 +383,61 @@ function Home() {
 
     setAmount("");
   };
+  //copy link
+  const [textToCopy, setTextToCopy] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopied(true);
+      console.log("Text copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    } finally {
+      setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+    }
+  };
+
+  const handleChange1 = (event) => {
+    setTextToCopy(event.target.value);
+  };
+
+  //handle data for booking
+  const [bookingData, setBookingData] = useState({
+    restaurant: null,
+    date: null,
+    time: null,
+    guests: null,
+    occasion: null,
+  });
+
+  const handleWeekdayClick = (day) => {
+    setBookingData((prevData) => ({ ...prevData, date: day.date }));
+  };
+
+  const handleGuestSelection = (guestCount) => {
+    setBookingData((prevData) => ({ ...prevData, guests: guestCount }));
+  };
+  const handletime = (timing) => {
+    setBookingData((prevData) => ({ ...prevData, time: timing }));
+  };
+
+  //console.log(bookingData);
+ 
+
+
+
+
   return (
     <div>
-      {/* popup1 */}
+      {/* popup1 recommendation */}
 
       <div className="">
         {isOpen && (
           <div>
-            <div className="absolute top-16 lg:left-[33%] md:left-[33%] sm:left-0 bg-white z-[100] ">
-              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[90%]">
+            <div className="absolute top-16 lg:left-[33%] md:left-[25%] sm:left-0 bg-white z-[100] ">
+              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[50vw] sm:h-fit sm:w-[90%]">
                 <div className="head-pop text-xl font-bold text-slate-600 py-4 text-center">
                   Recommend this place to help other foodies
                 </div>
@@ -453,7 +518,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="absolute lg:top-4 lg:right-1 md:top-4 md:right-1 sm:top-1 sm:right-16">
+            <div className="absolute top-16 right-2   z-[100]">
               <button className="  " onClick={closeModal}>
                 <IoCloseSharp size={36} color="rgba(255, 214, 40, 1)" />
               </button>
@@ -466,26 +531,26 @@ function Home() {
       <div className="">
         {isOpen4 && (
           <div>
-            <div className="absolute top-16 lg:left-[33%] md:left-[33%] sm:left-0 bg-white z-[100] ">
+            <div className="absolute top-16 lg:left-[33%] md:left-[33%] sm:left-[4%] bg-white z-[100] ">
               <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[90%]">
-                <div className="text-lg text-slate-500 font-bold text-center py-4">
+                <div className="text-2xl text-slate-500 font-bold text-center py-4">
                   Available Offers
                 </div>
-                <div className="chow-div flex flex-row px-24  border-y-2 py-2">
+                <div className="chow-div flex flex-row  justify-center border-y-2 py-2">
                   <div className="chow">
-                    <img src={chow} className="h-16 w-16" alt="" />
+                    <img src={chow} className="h-18 w-18" alt="" />
                   </div>
-                  <div className="chow-text flex flex-col ">
-                    <div className="text1 px-4 text-lg font-bold">
+                  <div className="chow-text flex flex-col justify-center ">
+                    <div className="text1  text-xl font-bold">
                       Chowman - Salt Lake
                     </div>
-                    <div className="txt2 px-4 text-slate-600">
+                    <div className="txt2  text-slate-600">
                       Salt Lake ,Sector 2
                     </div>
                   </div>
                 </div>
                 <div className="map ">
-                  <div className="container flex flex-wrap justify-center gap-4 p-4">
+                  <div className="container flex flex-wrap justify-center gap-4 p-4 h-fit">
                     {/* {datanew.map((item) => (
                         <ListItem key={item.id} {...item} />
                       ))} */}
@@ -499,7 +564,7 @@ function Home() {
                         </div>
                         <div className="text-xs">{data.text3}</div>
                         {reedem.map((data) => (
-                          <div className="py-8">
+                          <div className="py-2">
                             <button className="border-2 text-sm px-2 py-2 rounded-lg bg-yellow-500">
                               {data.text}
                             </button>
@@ -511,7 +576,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="absolute top-4 right-1">
+            <div className="absolute top-16 right-2 z-[100]">
               <button className="" onClick={closeModal4}>
                 <IoCloseSharp size={36} color="rgba(255, 214, 40, 1)" />
               </button>
@@ -525,11 +590,11 @@ function Home() {
         {isOpen1 && (
           <div>
             <div className="absolute top-16 lg:left-[33%] md:left-[22%] sm:left-0 bg-white z-[100] ">
-              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[60vw] sm:h-[90%] sm:w-[90%]">
+              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[60vw] sm:h-[90%] sm:w-[99vw]">
                 <div className="hd-txt text-xl font-bold text-slate-600  text-center  py-4 ">
                   Book a Table
                 </div>
-                <div className="chow-div flex flex-row px-8  w-[460px] border-y-2 py-4 justify-center">
+                <div className="chow-div flex flex-row px-8  lg:w-[460px] border-y-2 py-4 justify-center">
                   <div className="chow">
                     <img src={chow} className="h-16 w-16" alt="" />
                   </div>
@@ -552,16 +617,20 @@ function Home() {
           <span key={day}>{day}</span>
         ))} */}
                     </div>
-                    <div className="calendar-body flex flex-row">
+                    <div className="calendar-body flex flex-row overflow-scroll no-scrollbar">
                       {weekDates.map((day) => (
                         <div
                           key={day.date}
-                          className="calendar-day border-2 mx-auto rounded-xl py-4"
+                          className="calendar-day border-2 mx-auto rounded-xl py-2 cursor-pointer"
+                          onClick={() => handleWeekdayClick(day.date)}
                         >
-                          <div className="date px-6 cursor-pointer text-sm">
+                          <div className="date px-6 cursor-pointer text-xs ">
                             {day.date}
                           </div>
-                          <div className="weekday px-6 text-sm font-bold py-2">
+                          <div
+                            className="weekday px-6 text-sm font-bold py-2"
+                            onClick={() => handleWeekdayClick(day.dd)}
+                          >
                             {day.dd}
                           </div>
                         </div>
@@ -581,6 +650,7 @@ function Home() {
                           className="border-2 text-lg px-4 py-2 ml-1 rounded-lg cursor-pointer"
                           key={index}
                           style={style}
+                          //onClick={handletime(hour.time)}
                         >
                           {hour.time}
                         </li>
@@ -590,11 +660,17 @@ function Home() {
                 </div>
                 <div className="px-6 pb-4 text-lg">How Many Guests?</div>
                 <div>
-                  <ul className="flex flex-row w-[85%] overflow-scroll no-scrollbar px-2">
+                  <ul className="flex flex-row w-[85%] overflow-scroll no-scrollbar px-2 ">
                     {numbers.map((number) => (
                       <li
-                        className="px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer"
+                        className="px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer hover:bg-gray-200  selectable"
                         key={number}
+                        onClick={() => {
+                          handleGuestSelection(number);
+                           
+                        }}
+
+                        
                       >
                         {number}
                       </li>
@@ -622,7 +698,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="absolute top-4 right-1">
+            <div className="absolute top-16 right-3 z-[100]">
               <button className="" onClick={closeModal1}>
                 <IoCloseSharp size={36} color="rgba(255, 214, 40, 1)" />
               </button>
@@ -724,8 +800,8 @@ function Home() {
       <div className="">
         {isOpen5 && (
           <div>
-            <div className="absolute top-20 lg:left-[33%] md:left-[33%] sm:left-0 bg-white z-[100] ">
-              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[95%]">
+            <div className="absolute top-20 lg:left-[33%] md:left-[33%]   bg-white z-[100] ">
+              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[90%]">
                 <div className="payy text-2xl font-bold text-slate-600 px-28 py-4 text-center">
                   Call Restaurant
                 </div>
@@ -820,7 +896,7 @@ function Home() {
           <div>
             <div className="absolute top-20 lg:left-[33%] md:left-[33%] sm:left-0 bg-white z-[100] ">
               <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[95%]">
-                <div className="payy text-2xl font-bold text-slate-600 px-28 py-4 text-center">
+                <div className="payy text-2xl font-bold text-slate-600  py-4 text-center">
                   Call Restaurant
                 </div>
                 <div className="chow-div flex flex-row justify-center border-y-2 py-2">
@@ -828,10 +904,10 @@ function Home() {
                     <img src={chow} className="h-16 w-16" alt="" />
                   </div>
                   <div className="chow-text flex flex-col ">
-                    <div className="text1 px-4 text-lg font-bold">
+                    <div className="text1  text-xl font-bold">
                       Chowman - Salt Lake
                     </div>
-                    <div className="txt2 px-4 text-slate-600">
+                    <div className="txt2  text-slate-600">
                       Salt Lake ,Sector 2
                     </div>
                   </div>
@@ -869,6 +945,79 @@ function Home() {
         )}
       </div>
 
+      {/* share popup */}
+      <div>
+        {isOpen7 && (
+          <div>
+            <div className="absolute lg:h-fit top-28 lg:left-[38%] md:left-[22%] sm:left-0 bg-white z-[100] md:h-fit rounded-lg sm:h-[100vw]">
+              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[58vw] sm:h-fit sm:w-[95%]">
+                <div className="text-2xl font-bold py-6 text-[#363636] px-8">
+                  Share
+                </div>
+                <div className="flex flex-row w-[90%] mx-auto">
+                  <div className="flex flex-col  ">
+                    <div className="mx-4">
+                      <img className="h-14 w-14 " src={messeng} alt="" />
+                    </div>
+                    <div className="text-sm  text-center">Messenger</div>
+                  </div>
+                  <div className="flex flex-col ">
+                    <div className="mx-4">
+                      <img className="h-14 w-14 " src={whatsapp} alt="" />
+                    </div>
+                    <div className="text-sm text-center">WhatsApp</div>
+                  </div>
+                  <div className="flex flex-col ">
+                    <div className="mx-4">
+                      <img className="h-14 w-14" src={tele} alt="" />
+                    </div>
+                    <div className="text-sm text-center">Telegram</div>
+                  </div>
+                  <div className="flex flex-col ">
+                    <div className="mx-4">
+                      <img className="h-14 w-14" src={chat} alt="" />
+                    </div>
+                    <div className="text-sm text-center">Wechat</div>
+                  </div>
+                </div>
+                <div className="flex flex-col py-4 ">
+                  <div className="font-bold text-xl px-8 py-4 text-[#363636] ">
+                    Or copy link
+                  </div>
+                  <div className="flex flex-row ">
+                    <div className="  px-4 pb-4">
+                      <input
+                        type="text"
+                        id="inputText"
+                        placeholder="Enter text to copy"
+                        value={textToCopy}
+                        onChange={handleChange1}
+                        className="bg-[#0000000D]
+                        rounded-lg w-[320px] py-2 px-4"
+                      />
+                    </div>
+                    <div className=" pb-4">
+                      <button
+                        id="copyButton"
+                        onClick={handleCopy}
+                        className="bg-[#F3D74C] font-bold text-sm px-6 rounded-xl py-2"
+                      >
+                        {copied ? "COPIED!" : "COPY"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute top-20 right-1 z-[100]">
+              <button className="" onClick={closeModal7}>
+                <IoCloseSharp size={36} color="rgba(255, 214, 40, 1)" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="" id="background">
         {" "}
         <div className="Home  ">
@@ -888,6 +1037,7 @@ function Home() {
               src={share}
               className="absolute top-0 right-8 cursor-pointer sm:h-14 sm:top-2"
               alt=""
+              onClick={openModal7}
             />
             <img
               src={recommend}
@@ -980,7 +1130,7 @@ function Home() {
               <div className="button1">
                 <button
                   className="h-16 text-md w-full border-2 rounded-lg mb-8 text-xl flex justify-between py-2 "
-                  onClick={openModal5}
+                  onClick={openModal}
                 >
                   <span className="pl-8 py-2 text-lg md:-mt-1">
                     Recommed This Place{" "}
@@ -1030,7 +1180,41 @@ function Home() {
         </div>
       </div>
       <About />
-      <Footer1 />
+      <Photos />
+      <Menu />
+      <Footer/>
+      {/* footer1 */}
+      <div
+        id="footer"
+        className="footer1 md:flex lg:hidden md:flex-row py-8 sm:h-fit sm:flex sm:flex-row sm:-ml-8 "
+      >
+        <div className="div1 left-10 relative w-[40vw] sm:w-[46vw]">
+          {" "}
+          <button
+            className="h-16 text-md w-full border-2 rounded-lg  text-xl bg-yellow-400 flex justify-between "
+            onClick={openModal1}
+          >
+            <span className="pl-8 pt-4 sm:text-sm font-bold">
+              {" "}
+              Book a table
+            </span>
+            <img className=" px-6 py-2 h-10 mt-2 " src={arrow2} alt="" />
+          </button>
+        </div>
+
+        <div className="div2 relative left-24 w-[40vw] sm:w-[46vw] sm:-ml-12 ">
+          <button
+            className="h-16 text-md w-full border-2 rounded-lg text-xl bg-yellow-400 flex justify-between "
+            onClick={openModal2}
+          >
+            <span className="pl-8 pt-4 sm:text-sm lg:text-xl md:text-lg font-bold">
+              Pay Bill
+            </span>
+            <img className=" px-6 py-2 h-10 mt-3" src={arrow2} alt="" />
+          </button>
+        </div>
+        {/* <Footer1 /> */}
+      </div>
     </div>
   );
 }

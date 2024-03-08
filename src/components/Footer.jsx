@@ -6,6 +6,7 @@ import insta from "../assets/insta.png";
 import twitter from "../assets/twitter.png";
 import fb from "../assets/fb.png";
 import { Link } from "react-router-dom";
+import Footer1 from "./Footer2";
 
 function Footer() {
   const [email, setEmail] = useState("");
@@ -114,6 +115,7 @@ function Footer() {
           <p>made with 💛 with city of joy</p>
         </div>
       </div>
+      {/* <Footer1/> */}
     </div>
   );
 }

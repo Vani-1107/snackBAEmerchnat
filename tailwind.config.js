@@ -10,7 +10,7 @@ module.exports = {
       }
     },
     screens: {
-      'sm': '390px',
+      'sm': '310px',
       // => @media (min-width: 640px) { ... }
 
       'md': '768px',

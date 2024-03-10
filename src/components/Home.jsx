@@ -30,32 +30,67 @@ import tele from "../assets/tele.png";
 import chat from "../assets/chat.png";
 import Menu from "./Menu";
 import Footer from "./Footer";
+import { FaClock } from "react-icons/fa";
 
 import Photos from "./Photos";
+import { startTransition } from "react";
 const datanew = [
   {
     id: 1,
     image: chow, // Replace with your image URL
     text1: "Chowman",
-    text2: "240",
+    discount: 20,
     text3: "* on your dining bills",
+    constantDate1: new Date(2024, 3, 10),
+    constantDate2:new Date(2024, 3, 15),
   },
   {
     id: 2,
     image: chow, // Replace with your image URL
     text1: "Chowman",
-    text2: "240",
+    discount: 20,
     text3: "* on your dining bills",
+    constantDate1: new Date(2024, 3, 10),
+     constantDate2:new Date(2024, 3, 15),
   },
   {
     id: 3,
     image: chow, // Replace with your image URL
     text1: "Chowman",
-    text2: "240",
+    discount:20,
     text3: "* on your dining bills",
+     constantDate1: new Date(2024, 3, 10),
+     constantDate2:new Date(2024, 3, 15),
   },
   // ... Add more data objects here
 ];
+
+
+//const startDate = new Date(10/3/24); // Replace with actual date
+ // Replace with actual date
+
+
+  // const startDate = new Date();
+  // const endDate= new Date(startDate.getTime() + 5 * 24 * 60 * 60 * 1000);
+
+  // const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+  // // Safety check to avoid negative values if today's date is past the end date
+  // const daysRemaining = Math.max(daysDiff, 0);
+ 
+ 
+  function calculateDaysRemaining(date1,date2){
+    // if (date1 > date2) {
+    //   [date1, date2] = [date2, date1]; 
+    // }
+  
+    const diffInMilliseconds = date2.getTime() - date1.getTime();
+    const daysDiff = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+  
+    return daysDiff;
+  }
+ 
+
 const reedem = [
   {
     text: "Reedem Now",
@@ -68,6 +103,7 @@ const datanew1 = [
     image: burger, // Replace with your image URL
     text1: "Smoking Burger",
     text2: "240",
+    
   },
   {
     id: 2,
@@ -112,8 +148,15 @@ const images = [
   { url: slider, caption: "Image 2" },
   { url: slider, caption: "Image 3" },
 ];
-Modal.setAppElement("#root");
 function Home() {
+
+  const [discount,setDiscount] = useState(0);
+  function calcDiscount(data,amount){
+    const disc=(data/100)*amount;
+    setDiscount(disc);
+    // return disc;
+  }
+
   //guest
   const [numbers, setNumbers] = useState([]);
 
@@ -293,6 +336,10 @@ function Home() {
   const [isOpen2, setIsOpen2] = useState(false);
 
   const openModal2 = () => {
+    if(isOpen4)
+    {
+      setIsOpen4(false);
+    }
     setIsOpen2(true);
     document.getElementById("background").style.filter = "blur(10px)";
     document.documentElement.scrollTop = 0;
@@ -306,6 +353,7 @@ function Home() {
   const [isOpen4, setIsOpen4] = useState(false);
 
   const openModal4 = () => {
+    setIsOpen2(false);
     setIsOpen4(true);
     document.getElementById("background").style.filter = "blur(10px)";
     document.documentElement.scrollTop = 0;
@@ -371,12 +419,10 @@ function Home() {
   const [amount, setAmount] = useState("");
 
   const handleChange = (event) => {
-    // Allow only numbers and a single decimal point
-    // const regex = /^\d+(\.\d{0,2})?$/;
-    // if (regex.test(event.target.value)) {
+  
     setAmount(event.target.value);
 
-    // }
+    
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -527,12 +573,12 @@ function Home() {
         )}
       </div>
 
-      {/* avaible offer popup */}
+      {/* available offer popup */}
       <div className="">
         {isOpen4 && (
           <div>
-            <div className="absolute top-16 lg:left-[33%] md:left-[33%] sm:left-[4%] bg-white z-[100] ">
-              <div className="pop-up lg:h-fit lg:w-[30vw] md:h-fit md:w-[44vw] sm:h-fit sm:w-[90%]">
+            <div className="absolute top-16 lg:left-[33%] md:left-[25%] sm:left-[2%] bg-white z-[100] ">
+              <div className="pop-up lg:h-fit lg:w-[35vw] md:h-fit md:w-[50vw] sm:h-fit sm:w-[98vw]">
                 <div className="text-2xl text-slate-500 font-bold text-center py-4">
                   Available Offers
                 </div>
@@ -556,20 +602,30 @@ function Home() {
                       ))} */}
                     {datanew.map((data) => (
                       <div className="p-2 border-2 w-fit rounded-xl relative shadow-lg flex flex-col items-center">
-                        <div className="absolute top-0 left-0 rounded-t-xl w-full h-3 bg-yellow-300"></div>
-                        <img className="h-12 w-12 " src={data.image}></img>
-                        <div className="text-md font-bold">{data.text1}</div>
-                        <div className="text-3xl font-bold border border-yellow-500 py-2 px-2 rounded-xl">
-                          {data.text2}
+                        <div className="absolute top-0 left-0 right-0 rounded-t-xl w-full h-4 bg-[#FFD601]">
+                          <div className="">
+                            <div className="absolute top-2 right-2"><FaClock /></div>
+                            <div className="absolute top-7 right-1 text-[0.6rem] font-semibold"> 
+                                {calculateDaysRemaining(data.constantDate1,data.constantDate2)} days
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs">{data.text3}</div>
-                        {reedem.map((data) => (
+                        <div className="pt-3">  <img className="h-18 w-12 shadow-lg py-2" src={data.image}></img></div>
+                        <div className="text-md font-bold py-2">{data.text1}</div>
+                        <div className="text-3xl font-bold border border-yellow-500 py-2 px-2 rounded-xl">
+                          {data.discount}
+                        </div>
+                        <div className="text-xs pb-4 font-semibold">*on your dining bill</div>
+                        
                           <div className="py-2">
-                            <button className="border-2 text-sm px-2 py-2 rounded-lg bg-yellow-500">
-                              {data.text}
+                            <button onClick={()=>{
+                              calcDiscount(data.discount,amount)
+                              // setDiscount(data.discount);
+                              openModal2();
+                            }} className="border-2 font-semibold text-sm px-6 py-2 rounded-lg bg-[#FFD601]">
+                              Redeem Now
                             </button>
                           </div>
-                        ))}
                       </div>
                     ))}
                   </div>
@@ -691,8 +747,8 @@ function Home() {
                     </li>
                   </ul>
                 </div>
-                <div className="con-butt pb-4 mb-2 ">
-                  <button className="text-xl font-bold bg-yellow-500  py-4 rounded-xl ml-5 px-40">
+                <div className="con-butt pb-4 mb-2 flex justify-center">
+                  <button className="text-xl font-bold bg-yellow-500  py-4 rounded-xl w-[90%] px-40">
                     Book Now
                   </button>
                 </div>
@@ -746,9 +802,9 @@ function Home() {
                   </div>
                 </div>
                 <div className="avoff px-4">
-                  <div className="flex flex-row justify-between py-4 -ml-4">
+                  <div className="flex flex-row justify-between py-4 -ml-4 cursor-pointer" onClick={openModal4}>
                     {" "}
-                    <div className="ava px-4 pb-2 text-2xl ">
+                    <div className="ava px-4 pb-2 text-2xl">
                       Available Offers
                     </div>
                     <div>
@@ -763,23 +819,23 @@ function Home() {
                 </div>
                 <div className="bill flex flex-col border-2 mt-4 py-4 px-4 rounded-lg w-[95%] mx-auto ">
                   <div className="flex flex-row justify-between">
-                    <div className="pb-1">Total Bill Amount</div>
+                    <div className="pb-1">Total amount</div>
                     <div className="pb-1">{amount}</div>
                   </div>
                   <div className="flex flex-row justify-between">
                     <div className="pb-1">Total Discount</div>
-                    <div className="text-green-400 pb-1">100</div>
+                    <div className="text-green-400 pb-1">{discount}</div>
                   </div>
                   <div className="flex flex-row justify-between border-t-2">
                     <div className="pt-2">Amount to be Paid</div>
-                    <div className="pt-2">₹2400</div>
+                    <div className="pt-2">{amount-discount}</div>
                   </div>
                 </div>
-                <div className="con-butt w-[460px] py-4 mb-2">
+                <div className="con-butt py-4 mb-2 w-full flex justify-center">
                   <button
                     type="submit"
                     onSubmit={handleSubmit}
-                    className="text-xl font-bold bg-yellow-500 w-[90%] py-4 rounded-xl ml-5 "
+                    className="text-xl font-bold w-[90%] bg-yellow-500  py-4 rounded-xl  "
                   >
                     PAY NOW
                   </button>

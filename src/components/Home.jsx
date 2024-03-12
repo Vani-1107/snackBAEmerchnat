@@ -684,8 +684,8 @@ function Home() {
                     {allMenuItems && allMenuItems.map((data) => (
                       <div className="p-2 border-2  w-fit rounded-xl relative shadow-lg flex flex-col items-center">
                         <img className="h-12 w-12" src={data.pic}></img>
-                        <div className="text-xs text-slate-600 ">
-                          {data.menuItems}
+                        <div className="text-xs text-slate-600 text-center">
+                          {data.menuItem}
                         </div>
                         <div className="text-lg fnt-bold">240</div>
 

@@ -150,19 +150,45 @@ function Home() {
   const [numberSelected, setNumberSelected] = useState();
 
   const submitHandler = () => {
-    const formData = [
-      {
+    const formData = {
         date: dateSelected,
         time: timeSelected,
         occassion: occassion,
         numofpeople: numberSelected,
-      },
-    ];
+      };
     console.log("formData: ", formData);
     console.log("dateSelected : ", dateSelected);
     console.log("timeSelected : ", timeSelected);
     console.log("occassion : ", occassion);
     console.log("numberSelected : ", numberSelected);
+
+    const data = JSON.stringify(formData);
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:4000/api/bookings/65eb65fbb91e205204c67f52/65edb6299b2c9622f9286293',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      toast({
+        title: "Table booked successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+    });
+
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
   };
 
   const [discount, setDiscount] = useState(0);
@@ -287,7 +313,11 @@ function Home() {
       const day = date.getDate();
       const month = date.getMonth() + 1; // Months are 0-indexed
       const year = date.getFullYear();
-      const fullDate = `${day}-${month}-${year}`;
+      let fullDate = '';
+      if(month<10)
+        fullDate = `${day}-0${month}-${year}`;
+      else  
+        fullDate = `${day}-${month}-${year}`;
       // Extract the day of the week using getDay()
       const weekday = d.getDay();
 
@@ -493,23 +523,6 @@ function Home() {
     guest: "",
     occ: "",
   });
-  const handleDivClick = (event) => {
-    // Extract data from the clicked div (assuming an attribute stores the data)
-    const dayData = event.target.getAttribute("data-value");
-    const dateData = event.target.getAttribute("data-value");
-    const timeData = event.target.getAttribute("data-value");
-    const guestData = event.target.getAttribute("data-value");
-    const occData = event.target.getAttribute("data-value");
-
-    setFormData((prevData) => ({
-      ...prevData,
-      day: dayData,
-      date: dateData,
-      time: timeData,
-      guest: guestData,
-      occ: occData, // Update clickedDivData in formData
-    }));
-  };
 
   //console.log(bookingData);
   const [isButtonClicked, setIsButtonClicked] = useState(false);

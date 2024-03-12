@@ -31,7 +31,7 @@ import chat from "../assets/chat.png";
 import Menu from "./Menu";
 import Footer from "./Footer";
 import { FaClock } from "react-icons/fa";
-
+import axios from "axios";
 import Photos from "./Photos";
 import { startTransition } from "react";
 const datanew = [
@@ -42,7 +42,7 @@ const datanew = [
     discount: 20,
     text3: "* on your dining bills",
     constantDate1: new Date(2024, 3, 10),
-    constantDate2:new Date(2024, 3, 15),
+    constantDate2: new Date(2024, 3, 15),
   },
   {
     id: 2,
@@ -51,45 +51,41 @@ const datanew = [
     discount: 20,
     text3: "* on your dining bills",
     constantDate1: new Date(2024, 3, 10),
-     constantDate2:new Date(2024, 3, 15),
+    constantDate2: new Date(2024, 3, 15),
   },
   {
     id: 3,
     image: chow, // Replace with your image URL
     text1: "Chowman",
-    discount:20,
+    discount: 20,
     text3: "* on your dining bills",
-     constantDate1: new Date(2024, 3, 10),
-     constantDate2:new Date(2024, 3, 15),
+    constantDate1: new Date(2024, 3, 10),
+    constantDate2: new Date(2024, 3, 15),
   },
   // ... Add more data objects here
 ];
 
-
 //const startDate = new Date(10/3/24); // Replace with actual date
- // Replace with actual date
+// Replace with actual date
 
+// const startDate = new Date();
+// const endDate= new Date(startDate.getTime() + 5 * 24 * 60 * 60 * 1000);
 
-  // const startDate = new Date();
-  // const endDate= new Date(startDate.getTime() + 5 * 24 * 60 * 60 * 1000);
+// const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
 
-  // const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+// // Safety check to avoid negative values if today's date is past the end date
+// const daysRemaining = Math.max(daysDiff, 0);
 
-  // // Safety check to avoid negative values if today's date is past the end date
-  // const daysRemaining = Math.max(daysDiff, 0);
- 
- 
-  function calculateDaysRemaining(date1,date2){
-    // if (date1 > date2) {
-    //   [date1, date2] = [date2, date1]; 
-    // }
-  
-    const diffInMilliseconds = date2.getTime() - date1.getTime();
-    const daysDiff = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
-  
-    return daysDiff;
-  }
- 
+function calculateDaysRemaining(date1, date2) {
+  // if (date1 > date2) {
+  //   [date1, date2] = [date2, date1];
+  // }
+
+  const diffInMilliseconds = date2.getTime() - date1.getTime();
+  const daysDiff = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+  return daysDiff;
+}
 
 const reedem = [
   {
@@ -103,7 +99,6 @@ const datanew1 = [
     image: burger, // Replace with your image URL
     text1: "Smoking Burger",
     text2: "240",
-    
   },
   {
     id: 2,
@@ -149,10 +144,30 @@ const images = [
   { url: slider, caption: "Image 3" },
 ];
 function Home() {
+  const [dateSelected, setDateSelected] = useState("");
+  const [timeSelected, setTimeSelected] = useState("");
+  const [occassion, setOccassion] = useState("");
+  const [numberSelected, setNumberSelected] = useState();
 
-  const [discount,setDiscount] = useState(0);
-  function calcDiscount(data,amount){
-    const disc=(data/100)*amount;
+  const submitHandler = () => {
+    const formData = [
+      {
+        date: dateSelected,
+        time: timeSelected,
+        occassion: occassion,
+        numofpeople: numberSelected,
+      },
+    ];
+    console.log("formData: ", formData);
+    console.log("dateSelected : ", dateSelected);
+    console.log("timeSelected : ", timeSelected);
+    console.log("occassion : ", occassion);
+    console.log("numberSelected : ", numberSelected);
+  };
+
+  const [discount, setDiscount] = useState(0);
+  function calcDiscount(data, amount) {
+    const disc = (data / 100) * amount;
     setDiscount(disc);
     // return disc;
   }
@@ -249,6 +264,7 @@ function Home() {
       "Nov",
       "Dec",
     ];
+
     return `${day} ${monthWords[month - 1]}`;
   };
 
@@ -261,6 +277,10 @@ function Home() {
 
       const d = new Date(date);
 
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are 0-indexed
+      const year = date.getFullYear();
+      const fullDate = `${day}-${month}-${year}`;
       // Extract the day of the week using getDay()
       const weekday = d.getDay();
 
@@ -277,7 +297,11 @@ function Home() {
 
       console.log("Extracted weekday:", weekdayString); // Output: "Thu"
       // console.log("day  ",weekdayString);
-      days.unshift({ date: formatDate(date), dd: weekdayString });
+      days.unshift({
+        date: formatDate(date),
+        dd: weekdayString,
+        fullDate: fullDate,
+      });
       console.log(date, " day : ", weekdayString);
     }
 
@@ -336,8 +360,7 @@ function Home() {
   const [isOpen2, setIsOpen2] = useState(false);
 
   const openModal2 = () => {
-    if(isOpen4)
-    {
+    if (isOpen4) {
       setIsOpen4(false);
     }
     setIsOpen2(true);
@@ -405,7 +428,15 @@ function Home() {
     document.getElementById("background").style.filter = "blur(0px)";
   };
 
-  useEffect(() => {}, [isOpen, isOpen1, isOpen4, isOpen2, isOpen5, isOpen6, isOpen7]);
+  useEffect(() => {}, [
+    isOpen,
+    isOpen1,
+    isOpen4,
+    isOpen2,
+    isOpen5,
+    isOpen6,
+    isOpen7,
+  ]);
 
   //Search bar
   const [searchTerm, setSearchTerm] = useState("");
@@ -419,10 +450,7 @@ function Home() {
   const [amount, setAmount] = useState("");
 
   const handleChange = (event) => {
-  
     setAmount(event.target.value);
-
-    
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -450,31 +478,60 @@ function Home() {
   };
 
   //handle data for booking
-  const [bookingData, setBookingData] = useState({
-    restaurant: null,
-    date: null,
-    time: null,
-    guests: null,
-    occasion: null,
+
+  const [formData, setFormData] = useState({
+    day: "",
+    date: "",
+    time: "",
+    guest: "",
+    occ: "",
   });
+  const handleDivClick = (event) => {
+    // Extract data from the clicked div (assuming an attribute stores the data)
+    const dayData = event.target.getAttribute("data-value");
+    const dateData = event.target.getAttribute("data-value");
+    const timeData = event.target.getAttribute("data-value");
+    const guestData = event.target.getAttribute("data-value");
+    const occData = event.target.getAttribute("data-value");
 
-  const handleWeekdayClick = (day) => {
-    setBookingData((prevData) => ({ ...prevData, date: day.date }));
-  };
-
-  const handleGuestSelection = (guestCount) => {
-    setBookingData((prevData) => ({ ...prevData, guests: guestCount }));
-  };
-  const handletime = (timing) => {
-    setBookingData((prevData) => ({ ...prevData, time: timing }));
+    setFormData((prevData) => ({
+      ...prevData,
+      day: dayData,
+      date: dateData,
+      time: timeData,
+      guest: guestData,
+      occ: occData, // Update clickedDivData in formData
+    }));
   };
 
   //console.log(bookingData);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isButtonClicked1, setIsButtonClicked1] = useState(false);
  
-
-
-
-
+    //photos integration
+    const [pics,setPics]  = useState([]);
+    const getImages = async () => {
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:4000/api/gallery/65edb6299b2c9622f9286293",
+        headers: {},
+      };
+  
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          setPics(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+  
+    useEffect(()=>{
+      getImages();
+    },[]);
   return (
     <div>
       {/* popup1 recommendation */}
@@ -501,8 +558,13 @@ function Home() {
                   </div>
                 </div>
                 <div className="chow-button flex flex-row justify-center gap-2">
-                  <div className="btn-1 px-2  border-2 rounded-md bg-yellow-500 ">
-                    <button className=" flex px-4 py-2 ">
+                  <div className="btn-1  border-2 rounded-md ">
+                    <button
+                      className={` flex px-4 py-2 ${
+                        isButtonClicked1 ? "bg-yellow-500 " : ""
+                      }`}
+                      onClick={() => setIsButtonClicked1(!isButtonClicked1)}
+                    >
                       <div className="-ml-2 py-1">
                         <GoThumbsup className="" />
                       </div>{" "}
@@ -511,7 +573,10 @@ function Home() {
                   </div>
                   <div className="btn2   border-2 rounded-md ">
                     {" "}
-                    <button className="flex py-2 px-4 ">
+                    <button className={` flex px-4 py-2 ${
+                        isButtonClicked ? "bg-yellow-500 " : ""
+                      }`}
+                      onClick={() => setIsButtonClicked(!isButtonClicked)}>
                       <div className="-ml-1 py-1">
                         <GoThumbsdown />
                       </div>
@@ -546,13 +611,11 @@ function Home() {
                         </div>
                         <div className="text-lg fnt-bold">{data.text2}</div>
 
-                        {reedem.map((data) => (
-                          <div className="">
-                            <button className="border-2 text-sm px-2 py-2 rounded-lg bg-yellow-500">
-                              {data.text}
-                            </button>
-                          </div>
-                        ))}
+                        <div className="">
+                          <button className="border-2 text-sm px-2 py-2 rounded-lg bg-yellow-500">
+                            Reccomendations
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -604,28 +667,47 @@ function Home() {
                       <div className="p-2 border-2 w-fit rounded-xl relative shadow-lg flex flex-col items-center">
                         <div className="absolute top-0 left-0 right-0 rounded-t-xl w-full h-4 bg-[#FFD601]">
                           <div className="">
-                            <div className="absolute top-2 right-2"><FaClock /></div>
-                            <div className="absolute top-7 right-1 text-[0.6rem] font-semibold"> 
-                                {calculateDaysRemaining(data.constantDate1,data.constantDate2)} days
+                            <div className="absolute top-2 right-2">
+                              <FaClock />
+                            </div>
+                            <div className="absolute top-7 right-1 text-[0.6rem] font-semibold">
+                              {calculateDaysRemaining(
+                                data.constantDate1,
+                                data.constantDate2
+                              )}{" "}
+                              days
                             </div>
                           </div>
                         </div>
-                        <div className="pt-3">  <img className="h-18 w-12 shadow-lg py-2" src={data.image}></img></div>
-                        <div className="text-md font-bold py-2">{data.text1}</div>
-                        <div className="text-3xl font-bold border border-yellow-500 py-2 px-2 rounded-xl">
-                          {data.discount}
+                        <div className="pt-3">
+                          {" "}
+                          <img
+                            className="h-18 w-12 shadow-lg py-2"
+                            src={data.image}
+                          ></img>
                         </div>
-                        <div className="text-xs pb-4 font-semibold">*on your dining bill</div>
-                        
-                          <div className="py-2">
-                            <button onClick={()=>{
-                              calcDiscount(data.discount,amount)
+                        <div className="text-md font-bold py-2">
+                          {data.text1}
+                        </div>
+                        <div className="text-3xl font-bold border border-yellow-500 py-2 px-2 rounded-xl">
+                          {data.discount}%
+                        </div>
+                        <div className="text-xs pb-4 font-semibold">
+                          *on your dining bill
+                        </div>
+
+                        <div className="py-2">
+                          <button
+                            onClick={() => {
+                              calcDiscount(data.discount, amount);
                               // setDiscount(data.discount);
                               openModal2();
-                            }} className="border-2 font-semibold text-sm px-6 py-2 rounded-lg bg-[#FFD601]">
-                              Redeem Now
-                            </button>
-                          </div>
+                            }}
+                            className="border-2 font-semibold text-sm px-6 py-2 rounded-lg bg-[#FFD601]"
+                          >
+                            Redeem Now
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -668,25 +750,20 @@ function Home() {
                     Which Day?
                   </div>
                   <div className="calendar-scroller" onScroll={handleScroll}>
-                    <div className="calendar-header">
-                      {/* {WEEK_DAYS.map((day) => (
-          <span key={day}>{day}</span>
-        ))} */}
-                    </div>
-                    <div className="calendar-body flex flex-row overflow-scroll no-scrollbar">
+                    <div className="calendar-header"></div>
+                    <div className="calendar-body px-6 flex flex-row gap-2 overflow-scroll no-scrollbar">
                       {weekDates.map((day) => (
                         <div
                           key={day.date}
-                          className="calendar-day border-2 mx-auto rounded-xl py-2 cursor-pointer"
-                          onClick={() => handleWeekdayClick(day.date)}
+                          className="calendar-day border-2  rounded-xl py-2 cursor-pointer"
+                          onClick={() => {
+                            setDateSelected(day.fullDate);
+                          }}
                         >
                           <div className="date px-6 cursor-pointer text-xs ">
                             {day.date}
                           </div>
-                          <div
-                            className="weekday px-6 text-sm font-bold py-2"
-                            onClick={() => handleWeekdayClick(day.dd)}
-                          >
+                          <div className="weekday px-6 text-sm font-bold py-2">
                             {day.dd}
                           </div>
                         </div>
@@ -695,7 +772,7 @@ function Home() {
                   </div>
                 </div>
                 <div className="text-lg pt-2 px-6 pb-2">What time?</div>
-                <div className=" w-[83%] overflow-scroll no-scrollbar ">
+                <div className=" w-[85%] overflow-scroll no-scrollbar px-6 ">
                   <ul className="flex flex-row  px-18 py-2 rounded-lg px-2 ">
                     {availableHours.map((hour, index) => {
                       const style = hour.isClickable
@@ -707,6 +784,9 @@ function Home() {
                           key={index}
                           style={style}
                           //onClick={handletime(hour.time)}
+                          onClick={() => {
+                            setTimeSelected(hour.time);
+                          }}
                         >
                           {hour.time}
                         </li>
@@ -716,17 +796,14 @@ function Home() {
                 </div>
                 <div className="px-6 pb-4 text-lg">How Many Guests?</div>
                 <div>
-                  <ul className="flex flex-row w-[85%] overflow-scroll no-scrollbar px-2 ">
+                  <ul className="flex flex-row w-[85%] overflow-scroll no-scrollbar px-6 ">
                     {numbers.map((number) => (
                       <li
                         className="px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer hover:bg-gray-200  selectable"
                         key={number}
                         onClick={() => {
-                          handleGuestSelection(number);
-                           
+                          setNumberSelected(number);
                         }}
-
-                        
                       >
                         {number}
                       </li>
@@ -735,20 +812,38 @@ function Home() {
                 </div>
                 <div className="px-6 py-4 text-lg">Special Ocassions</div>
                 <div className="flex flex-row pb-4 ">
-                  <ul className="flex flex-row items-center px-9">
-                    <li className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer">
+                  <ul className="flex flex-row items-center px-6">
+                    <li
+                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setOccassion("Birthday");
+                      }}
+                    >
                       Birthday
                     </li>
-                    <li className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer">
+                    <li
+                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setOccassion("Anniversary");
+                      }}
+                    >
                       Anniversary
                     </li>
-                    <li className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer">
+                    <li
+                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setOccassion("Couple Date");
+                      }}
+                    >
                       Couple Date
                     </li>
                   </ul>
                 </div>
                 <div className="con-butt pb-4 mb-2 flex justify-center">
-                  <button className="text-xl font-bold bg-yellow-500  py-4 rounded-xl w-[90%] px-40">
+                  <button
+                    className="text-xl font-bold bg-yellow-500  py-4 rounded-xl w-[90%] px-36"
+                    onClick={submitHandler}
+                  >
                     Book Now
                   </button>
                 </div>
@@ -802,7 +897,10 @@ function Home() {
                   </div>
                 </div>
                 <div className="avoff px-4">
-                  <div className="flex flex-row justify-between py-4 -ml-4 cursor-pointer" onClick={openModal4}>
+                  <div
+                    className="flex flex-row justify-between py-4 -ml-4 cursor-pointer"
+                    onClick={openModal4}
+                  >
                     {" "}
                     <div className="ava px-4 pb-2 text-2xl">
                       Available Offers
@@ -828,7 +926,7 @@ function Home() {
                   </div>
                   <div className="flex flex-row justify-between border-t-2">
                     <div className="pt-2">Amount to be Paid</div>
-                    <div className="pt-2">{amount-discount}</div>
+                    <div className="pt-2">{amount - discount}</div>
                   </div>
                 </div>
                 <div className="con-butt py-4 mb-2 w-full flex justify-center">
@@ -1134,8 +1232,8 @@ function Home() {
             {/* <Slider images={images} /> */}
             <div className="slider-container w-[50vw] relative lg:-left-16 md:hidden lg:flex sm:hidden ">
               <img
-                src={images[currentSlide].url}
-                alt={images[currentSlide].caption}
+                src={pics[currentSlide]}
+                alt="image"
                 className="slider-image h-[50vh] w-[60vw] object-cover rounded-lg shadow-md  "
               />
 
@@ -1238,7 +1336,7 @@ function Home() {
       <About />
       <Photos />
       <Menu />
-      <Footer/>
+      <Footer />
       {/* footer1 */}
       <div
         id="footer"

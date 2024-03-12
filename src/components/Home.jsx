@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import bg from "../assets/Rectangle 3463524.png";
 import arrow from "../assets/Back.png";
 import like from "../assets/More.png";
@@ -184,10 +184,15 @@ function Home() {
   const closingTime = "23:00";
   const [currentTime, setCurrentTime] = useState(new Date());
   const [availableHours, setAvailableHours] = useState([]);
+  const [selectedHourIndex, setSelectedHourIndex] = useState(null);
+  const handleTimeSelector = (index) => {
+    setSelectedHourIndex(index); // Update selected index upon click
+  };
   useEffect(() => {
     const updateAvailableHours = () => {
       const now = new Date();
       const hours = [];
+      
 
       // Ensure opening time is before closing time
       if (openingTime > closingTime) {
@@ -266,7 +271,9 @@ function Home() {
     ];
 
     return `${day} ${monthWords[month - 1]}`;
+    
   };
+  const [selectedId, setSelectedId] = useState(null);
 
   // Generate an array of dates for the current week
   const getWeekDates = () => {
@@ -350,7 +357,7 @@ function Home() {
     setIsOpen1(true);
     document.getElementById("background").style.filter = "blur(10px)";
     document.documentElement.scrollTop = 0;
-  };
+  }; 
 
   const closeModal1 = () => {
     setIsOpen1(false);
@@ -532,6 +539,36 @@ function Home() {
     useEffect(()=>{
       getImages();
     },[]);
+
+
+    //select
+    
+  
+    const [selectedDate, setSelectedDate] = useState(null); // State to store selected date
+
+    const handleClick = (day) => {
+      setSelectedDate(day.fullDate); // Update selected date on click
+    };
+   
+    
+   
+      const [selectedNumber, setSelectedNumber] = useState(null); // Initialize selected number state
+
+      //const numbers = [1, 2, 3, 4, 5, 6]; // Array of available guest numbers
+    
+      const handleNumberSelection = (number) => {
+        setSelectedNumber(number); // Update selected number state
+      };
+
+        const [selectedOccasion, setSelectedOccasion] = useState(null); // Initialize selected occasion state
+
+        const [isButtonClicked2, setIsButtonClicked2] = useState(false);
+        const [isButtonClicked3, setIsButtonClicked3] = useState(false);
+        const [isButtonClicked4, setIsButtonClicked4] = useState(false);
+
+        
+          
+
   return (
     <div>
       {/* popup1 recommendation */}
@@ -732,7 +769,7 @@ function Home() {
                 <div className="hd-txt text-xl font-bold text-slate-600  text-center  py-4 ">
                   Book a Table
                 </div>
-                <div className="chow-div flex flex-row px-8  lg:w-[460px] border-y-2 py-4 justify-center">
+                <div className="chow-div flex flex-row    border-y-2 py-4 justify-center">
                   <div className="chow">
                     <img src={chow} className="h-16 w-16" alt="" />
                   </div>
@@ -746,21 +783,26 @@ function Home() {
                   </div>
                 </div>
                 <div className="day">
-                  <div className="day-text  px-6 text-lg pt-2 pb-4">
+                   <div className="day-text  px-6 text-lg pt-2 pb-4"> 
                     Which Day?
                   </div>
                   <div className="calendar-scroller" onScroll={handleScroll}>
                     <div className="calendar-header"></div>
-                    <div className="calendar-body px-6 flex flex-row gap-2 overflow-scroll no-scrollbar">
+                    <div  className="calendar-body px-6 flex flex-row gap-2 overflow-scroll no-scrollbar">
                       {weekDates.map((day) => (
-                        <div
-                          key={day.date}
-                          className="calendar-day border-2  rounded-xl py-2 cursor-pointer"
-                          onClick={() => {
+                        <div  
+                        key={day.date}
+                        className={`calendar-day border-2 rounded-xl cursor-pointer py-2 ${
+                          selectedDate === day.fullDate ? 'border border-yellow-500' : 'bg-white'
+                        }`}
+                          // className="calendar-day border-2  rounded-xl py-2 cursor-pointer"
+                          
+                          onClick={() => { 
                             setDateSelected(day.fullDate);
+                            handleClick(day)
                           }}
                         >
-                          <div className="date px-6 cursor-pointer text-xs ">
+                          <div className="date px-7 cursor-pointer text-xs ">
                             {day.date}
                           </div>
                           <div className="weekday px-6 text-sm font-bold py-2">
@@ -780,12 +822,17 @@ function Home() {
                         : { pointerEvents: "none", opacity: 0.5 };
                       return (
                         <li
-                          className="border-2 text-lg px-4 py-2 ml-1 rounded-lg cursor-pointer"
+                          //className="border-2 text-lg px-4 py-2 ml-1 rounded-lg cursor-pointer"
+                          className={`
+                          border-2 text-lg px-4 py-2 ml-1 rounded-lg cursor-pointer
+                          ${index == selectedHourIndex ? 'border border-yellow-500 ' : ''}
+                        `}
                           key={index}
                           style={style}
                           //onClick={handletime(hour.time)}
                           onClick={() => {
                             setTimeSelected(hour.time);
+                            handleTimeSelector(index)
                           }}
                         >
                           {hour.time}
@@ -799,10 +846,15 @@ function Home() {
                   <ul className="flex flex-row w-[85%] overflow-scroll no-scrollbar px-6 ">
                     {numbers.map((number) => (
                       <li
-                        className="px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer hover:bg-gray-200  selectable"
+                        //className="px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer hover:bg-gray-200  selectable"
+                        className={`
+                        px-6 text-xl font-bold border-2 rounded-lg ml-2 py-4 cursor-pointer
+                        ${number === selectedNumber ? 'border border-yellow-500' : ''}  // Conditional background color
+                      `}
                         key={number}
                         onClick={() => {
                           setNumberSelected(number);
+                          handleNumberSelection(number)
                         }}
                       >
                         {number}
@@ -810,29 +862,34 @@ function Home() {
                     ))}
                   </ul>
                 </div>
-                <div className="px-6 py-4 text-lg">Special Ocassions</div>
-                <div className="flex flex-row pb-4 ">
+                <div className="px-6 py-4 text-lg">Special Ocassions</div>  
+                <div className="flex flex-row pb-4 ">     
                   <ul className="flex flex-row items-center px-6">
                     <li
-                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      className={`border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer ${  isButtonClicked2 ? "border border-yellow-500 " : ""}`}
                       onClick={() => {
-                        setOccassion("Birthday");
+                        setOccassion("Birthday");    
+                        setIsButtonClicked2(!isButtonClicked2) 
                       }}
                     >
                       Birthday
                     </li>
                     <li
-                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      //className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                      className={`border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer ${  isButtonClicked3 ? "border border-yellow-500 " : ""}`}
                       onClick={() => {
                         setOccassion("Anniversary");
+                        setIsButtonClicked3(!isButtonClicked3) 
                       }}
                     >
                       Anniversary
                     </li>
                     <li
-                      className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                     // className="border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer"
+                     className={`border-2 ml-3 px-4 py-4 rounded-lg cursor-pointer ${  isButtonClicked4 ? "border border-yellow-500 " : ""}`}
                       onClick={() => {
                         setOccassion("Couple Date");
+                        setIsButtonClicked4(!isButtonClicked4) 
                       }}
                     >
                       Couple Date
@@ -1230,21 +1287,21 @@ function Home() {
             </div>
 
             {/* <Slider images={images} /> */}
-            <div className="slider-container w-[50vw] relative lg:-left-16 md:hidden lg:flex sm:hidden ">
+            <div className="slider-container w-[50vw]  relative lg:-left-16 md:hidden lg:flex sm:hidden ">
               <img
-                src={pics[currentSlide]}
+                src={images[currentSlide].url}
                 alt="image"
-                className="slider-image h-[50vh] w-[60vw] object-cover rounded-lg shadow-md  "
+                className="slider-image h-[50vh] w-[50vw] object-cover rounded-lg shadow-md relative "
               />
 
               <button
-                className="absolute left-[25px] top-[155px]"
+                className="absolute bottom-[50%] left-6"
                 onClick={handlePrev}
               >
                 <MdArrowBackIos size={40} color="white" />
               </button>
               <button
-                className="absolute top-[150px] left-[720px]"
+                className="absolute bottom-[48%] right-4"
                 onClick={handleNext}
               >
                 <MdArrowForwardIos size={40} color="white" />

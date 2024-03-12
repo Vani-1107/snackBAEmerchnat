@@ -1,7 +1,8 @@
 import React from "react";
 import burger from "../assets/burger.png";
 import rec from "../assets/recommend.png";
-
+import axios from "axios";
+import { useState,useEffect } from "react";
 const texts = ["All", "Starter", "Burgers", "Momos", "Desserts"];
 const data = [
   { image: burger, text: "Smokin' Burger" },
@@ -17,17 +18,43 @@ const data = [
   { image: burger, text: "Smokin' Burger" },
   { image: burger, text: "Smokin' Burger" },
 ];
+
 const price = ["₹240"];
 const recommend = [{ image: rec, text: "1000+" }];
 const rectext = ["Recommendations"]; 
 function Menu() {
+  const [allMenuItem,setAllMenuItem] = useState();
+
+  const fetchMenu = async () => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: "http://localhost:4000/api/menu/65edb6299b2c9622f9286293",
+      headers: {}
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setAllMenuItem(response.data);
+        console.log("all menu data : ", allMenuItem);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(()=>{
+    fetchMenu();
+  },[]);
+  
   return (
-    <div className="menu-page h-[fit]  w-[80%] mx-auto lg:px-4  pb-8">
+    <div className="menu-page h-[fit]  w-[90%] mx-auto lg:px-4 sm:px-2  pb-8">
       <div className="menu-head  text-slate-600 font-bold sm:pt-4 sm:text-2xl relative sm:-ml-4 lg:text-3xl">
         Explore Menu
       </div>
       {/* types */}
-      <div className="menu-div flex flex-row py-8 sm:-ml-7">
+      <div className="menu-div flex flex-row py-8 sm:-ml-7 sm:px-2">
         {texts.map((text, index) => (
           <div
             key={index}
@@ -40,7 +67,7 @@ function Menu() {
       {/* menu ite */}
       <div className="menu-img  ">
         <div className="flex gap-6 flex-wrap">
-          {data.map((item, index) => (
+          {allMenuItem && allMenuItem.map((item, index) => (
             <div key={index} className="relative mt-24">
               <img
                 src={item.image}

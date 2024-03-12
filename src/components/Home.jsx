@@ -34,6 +34,7 @@ import { FaClock } from "react-icons/fa";
 import axios from "axios";
 import Photos from "./Photos";
 import { startTransition } from "react";
+import { useToast } from "@chakra-ui/toast";
 const datanew = [
   {
     id: 1,
@@ -144,6 +145,7 @@ const images = [
   { url: slider, caption: "Image 3" },
 ];
 function Home() {
+  const toast = useToast();
    //recommendations
   const [allMenuItems,setAllMenuItems] = useState();
 

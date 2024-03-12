@@ -75,7 +75,7 @@ function Menu() {
                 className="w-26 h-24 absolute -top-20 left-3"
               />
               <div className="p-4 rounded-xl shadow-lg overflow-hidden w-fit">
-                <p className="text-lg font-medium pt-3">{item.text}</p>
+                <p className="text-lg font-medium pt-3">{item.menuItem}</p>
                 {price.map((text, index) => (
                   <div
                     key={index}

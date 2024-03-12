@@ -144,6 +144,29 @@ const images = [
   { url: slider, caption: "Image 3" },
 ];
 function Home() {
+   //recommendations
+  const [allMenuItems,setAllMenuItems] = useState();
+
+  const fetchMenu = async () => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: "http://localhost:4000/api/menu/65edb6299b2c9622f9286293",
+      headers: {}
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setAllMenuItems(response.data);
+        console.log("all menu data : ", allMenuItems);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  
+  //book a table
   const [dateSelected, setDateSelected] = useState("");
   const [timeSelected, setTimeSelected] = useState("");
   const [occassion, setOccassion] = useState("");
@@ -556,7 +579,6 @@ function Home() {
 
     //select
     
-  
     const [selectedDate, setSelectedDate] = useState(null); // State to store selected date
 
     const handleClick = (day) => {
@@ -579,7 +601,13 @@ function Home() {
         const [isButtonClicked3, setIsButtonClicked3] = useState(false);
         const [isButtonClicked4, setIsButtonClicked4] = useState(false);
 
-        
+    useEffect(()=>{
+      if(isOpen)
+      {
+        fetchMenu();
+      }
+    },[isOpen]);
+
           
 
   return (
@@ -651,15 +679,15 @@ function Home() {
                   />
                 </div>
 
-                <div className="map-img w-[88%] mx-auto pt-4">
-                  <div className="container flex flex-wrap justify-center gap-1 ">
-                    {datanew1.map((data) => (
+                <div className="map-img w-[88%] mx-auto pt-4 h-[350px] overflow-scroll no-scrollbar">
+                  <div className="container flex flex-wrap justify-center gap-1">
+                    {allMenuItems && allMenuItems.map((data) => (
                       <div className="p-2 border-2  w-fit rounded-xl relative shadow-lg flex flex-col items-center">
-                        <img className="h-12 w-12" src={data.image}></img>
+                        <img className="h-12 w-12" src={data.pic}></img>
                         <div className="text-xs text-slate-600 ">
-                          {data.text1}
+                          {data.menuItems}
                         </div>
-                        <div className="text-lg fnt-bold">{data.text2}</div>
+                        <div className="text-lg fnt-bold">240</div>
 
                         <div className="">
                           <button className="border-2 text-sm px-2 py-2 rounded-lg bg-yellow-500">
